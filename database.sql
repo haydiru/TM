@@ -69,113 +69,97 @@ CREATE TABLE IF NOT EXISTS `traveler_posting` (
   KEY `id_payment` (`id_payment`),
   PRIMARY KEY (`id`)
 )ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
-CREATE TABLE IF NOT EXISTS `fakta` ( 
-  `id` int(11) NOT NULL AUTO_INCREMENT, 
-  `tahun` smallint(6) NOT NULL, 
-  `id_bulan` smallint(6) NOT NULL, 
-  `id_wilayah` varchar(11) NOT NULL,
-	`kode_unik` varchar(50) NOT NULL,
-  `id_variabel` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
-  `id_kategori` int(11) NOT NULL, 
-  `id_item_kategori` int(11) NOT NULL,
-  `id_sumber_data`  int(11) NOT NULL,
-  `nilai` double NOT NULL,
-  PRIMARY KEY (`id`), 
-  KEY `id_bulan` (`id_bulan`), 
-  KEY `id_wilayah` (`id_wilayah`), 
-  KEY `id_variabel` (`id_variabel`), 
-  KEY `id_kategori` (`id_kategori`),
-  KEY `id_item_kategori` (`id_item_kategori`),
-  KEY `id_sumber_data` (`id_sumber_data`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-CREATE TABLE IF NOT EXISTS `item_kategori` ( 
-  `id` int(11) NOT NULL AUTO_INCREMENT, 
-  `nama` varchar(255) NOT NULL,
-  `item_no` int(11) NOT NULL,
-  PRIMARY KEY (`id`) 
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
-
-CREATE TABLE IF NOT EXISTS `kamus_indikator` ( 
-  `id` int(11) NOT NULL AUTO_INCREMENT, 
-  `kondef` text ,
-  `manfaat` text ,
-  `interpretasi` text ,
-  `rumus` text ,
-  `level_penyajian` text ,
-  `publikasi` text ,
-  `penyedia_informasi` text ,
-  `implementasi` text ,
-  `sumber_data` text ,
-  `keterbatasan` text ,
-  `catatan` text ,
-  `id_variabel` int(11) NOT NULL,
-  PRIMARY KEY (`id`), 
-  KEY `id_variabel` (`id_variabel`) 
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-CREATE TABLE IF NOT EXISTS `kategori` ( 
-  `id` int(11) NOT NULL AUTO_INCREMENT, 
-  `nama` varchar(64) NOT NULL, 
-  `id_variabel` int(11) NOT NULL,
-  `keterangan` text,
-  PRIMARY KEY (`id`),
-  KEY `id_variabel` (`id_variabel`) 
-)ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
-
-
-CREATE TABLE IF NOT EXISTS `sumber_data` ( 
-  `id` int(11) NOT NULL AUTO_INCREMENT, 
-  `tipe` smallint(6),
-  `nama_cs` varchar(200),
-  `tanggal_cs` date,
-  `institusi_cs` text,
-  `deskripsi_cs` text,
-  `nama_buku` varchar(200),
-  `tanggal_buku` date,
-  `penerbit_buku` text,
-  `status` tinyint(1),
-  PRIMARY KEY (`id`) 
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-CREATE TABLE IF NOT EXISTS `topik` ( 
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nama` varchar(64) NOT NULL, 
-  `keterangan` text,
-  `id_parent` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-)ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
-
-CREATE TABLE IF NOT EXISTS `variabel` ( 
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_topik` int(11) NOT NULL,  
-  `nama` varchar(64) NOT NULL, 
-  `keterangan` text,
-  `satuan` varchar(64) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_topik` (`id_topik`) 
-)ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
-
-CREATE TABLE IF NOT EXISTS `wilayah` ( 
+CREATE TABLE IF NOT EXISTS `negara` ( 
   `id` varchar(11) NOT NULL, 
   `nama` varchar(64) NOT NULL, 
-  `id_parent` varchar(11) NOT NULL,
-  `tipe` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `geoserver_url` ( 
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_wilayah` varchar(11) NOT NULL,  
-  `url` text NOT NULL,
-  `zoom` smallint(3) NOT NULL,
-  `center_x` double NOT NULL,
-  `center_y` double NOT NULL,
-  `tipe` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_wilayah` (`id_wilayah`)
-)ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+CREATE TABLE IF NOT EXISTS `provinsi` ( 
+  `id` varchar(11) NOT NULL, 
+  `nama` varchar(64) NOT NULL, 
+  `id_negara` varchar(64) NOT NULL, 
+  KEY `id_negara` (`id_negara`),
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `kabupaten` ( 
+  `id` varchar(11) NOT NULL, 
+  `nama` varchar(64) NOT NULL, 
+  `id_provinsi` varchar(64) NOT NULL, 
+  KEY `id_provinsi` (`id_provinsi`),
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `kecamatan` ( 
+  `id` varchar(11) NOT NULL, 
+  `nama` varchar(64) NOT NULL, 
+  `id_kabupaten` varchar(64) NOT NULL, 
+  KEY `id_kabupaten` (`id_kabupaten`),
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `message` ( 
+  `id` int(11) NOT NULL AUTO_INCREMENT, 
+  `nama` varchar(64) NOT NULL,
+  `idusersender` int(11) NOT NULL, 
+  `iduserreceiver` int(11) NOT NULL, 
+  `time` int(11) NOT NULL, 
+  `isread` boolean NOT NULL, 
+  `issent` boolean NOT NULL, 
+  `isi` text, 
+  KEY `idusersender` (`idusersender`),
+  KEY `iduserreceiver` (`iduserreceiver`),
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+
+CREATE TABLE IF NOT EXISTS `testimoni` ( 
+  `id` int(11) NOT NULL AUTO_INCREMENT, 
+  `id_traveler_posting` int(11) NOT NULL,
+  `id_consumer` int(11) NOT NULL, 
+  `rate` smallint(6) NOT NULL, 
+  `time` int(11) NOT NULL, 
+  `isi` text, 
+  `kontak` boolean, 
+  KEY `id_traveler_posting` (`id_traveler_posting`),
+  KEY `idusersender` (`idusersender`),
+  KEY `iduserreceiver` (`iduserreceiver`),
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+
+CREATE TABLE IF NOT EXISTS `barang` ( 
+  `id` int(11) NOT NULL AUTO_INCREMENT, 
+  `id_traveler_posting` int(11) NOT NULL,
+  `id_type_barang` int(11) NOT NULL,
+  KEY `id_traveler_posting` (`id_traveler_posting`),
+  KEY `id_type_barang` (`id_type_barang`),
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+
+CREATE TABLE IF NOT EXISTS `type_barang` ( 
+  `id` int(11) NOT NULL AUTO_INCREMENT, 
+  `nama` varchar(64),
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+
+CREATE TABLE IF NOT EXISTS `status` ( 
+  `id` int(11) NOT NULL AUTO_INCREMENT, 
+  `nama` varchar(64),
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+
+CREATE TABLE IF NOT EXISTS `basis_harga` ( 
+  `id` int(11) NOT NULL AUTO_INCREMENT, 
+  `nama` varchar(64),
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+
+CREATE TABLE IF NOT EXISTS `payment` ( 
+  `id` int(11) NOT NULL AUTO_INCREMENT, 
+  `nama` varchar(64),
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
 
 ALTER TABLE  `fakta` ADD UNIQUE (`kode_unik`);
 ALTER TABLE  `geoserver_url` ADD CONSTRAINT  `geoserver_url_id_wilayah` FOREIGN KEY (`id_wilayah`) REFERENCES `database_gis`.`wilayah` (`id`) ON DELETE CASCADE;
